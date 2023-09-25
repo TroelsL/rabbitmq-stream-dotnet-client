@@ -66,12 +66,13 @@ namespace RabbitMQ.Stream.Client
             {
                 try
                 {
-                    var client = await Client.Create(clientParams with { Endpoint = endPoint }, logger)
+                    var modifiedParameters = clientParams with { Endpoint = endPoint };
+                    var client = await Client.Create(modifiedParameters, logger)
                         .ConfigureAwait(false);
                     if (!client.IsClosed)
                     {
                         logger?.LogDebug("Client connected to {@EndPoint}", endPoint);
-                        return new StreamSystem(clientParams, client, logger);
+                        return new StreamSystem(modifiedParameters, client, logger);
                     }
                 }
                 catch (Exception e)
